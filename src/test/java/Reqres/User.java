@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static Reqres.Specs.*;
 
-public class Tests {
+public class User {
     @Test
     public void singleUser() {
         given()
@@ -19,20 +19,6 @@ public class Tests {
                 .then()
                 .spec(responseSpec)
                 .log().body();
-    }
-
-    @Test
-    public void printRequisitesTest() {
-
-        Response response = RestAssured.get("/api/users?page=2");
-
-        System.out.println(response.statusCode());
-        System.out.println(response.asString());
-        System.out.println(response.getBody().asString());
-        System.out.println(response.statusLine());
-
-        int statusCode = response.getStatusCode();
-        assertThat(statusCode).isEqualTo(200);
     }
 
     @Test
@@ -48,27 +34,33 @@ public class Tests {
     @Test
     public void bodyParameterTest() {
 
-        when()
-                .get("/api/users?page=2")
+        given()
+                .spec(request)
+                .get("/users?page=2")
                 .then()
+                .spec(responseSpec)
                 .body("total_pages", is(2));
     }
 
     @Test
     public void secondObjectTest() {
 
-        when()
-                .get("/api/users?page=2")
+        given()
+                .spec(request)
+                .get("/users?page=2")
                 .then()
+                .spec(responseSpec)
                 .body("data[0].id", is(7));
     }
 
     @Test
     public void singleUserTest() {
 
-        when()
-                .get("/api/users/2")
+        given()
+                .spec(request)
+                .get("/users/2")
                 .then()
+                .spec(responseSpec)
                 .body("data.email", is("janet.weaver@reqres.in"))
                 .body("data.id", is(2))
                 .body("data.first_name", is("Janet"))
@@ -78,9 +70,12 @@ public class Tests {
     @Test
     public void extraInfoTest() {
 
-        when()
-                .get("/api/users/2")
+        given()
+                .spec(request)
+                .get("/users/2")
                 .then()
+                .spec(responseSpec)
+
                 .body("support.text", is("To keep ReqRes free, contributions towards server costs are appreciated!"));
     }
 }

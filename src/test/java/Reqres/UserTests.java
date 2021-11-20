@@ -1,16 +1,20 @@
 package Reqres;
 
 import Reqres.models.UserData;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 
 import static Reqres.Specs.request;
 import static Reqres.Specs.responseSpec;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class User {
+public class UserTests {
     @Test
+    @Description("Проверить поля юзера 2")
     public void userJanetData() {
         UserData data = given()
                 .spec(request)
@@ -27,6 +31,7 @@ public class User {
     }
 
     @Test
+    @Description("Проверить поля юзера 3") // В дальнейшем можно вынести в степ страницы принимающий номер юзера
     public void userEmmaData() {
         UserData data = given()
                 .spec(request)
@@ -43,17 +48,32 @@ public class User {
     }
 
     @Test
-    public void statusCodeTest() {
+    @Description("Проверить поле support юзера")
+    public void extraInfoData() {
         UserData data = given()
+                .spec(request)
+                .get("/users/2")
+                .then()
+                .spec(responseSpec)
+                .extract().as(UserData.class);
+
+        assertEquals("https://reqres.in/#support-heading", data.getSupport().getUrl());
+        assertEquals("To keep ReqRes free, contributions towards server costs are appreciated!", data.getSupport().getText());
+    }
+
+    @Test
+    @Description("Проверить что всего 2 страницы")
+    public void pagesAmountTest() {
+        given()
                 .spec(request)
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
-                .body("total_pages", is(2))
-                .extract().as(UserData.class);
+                .body("total_pages", is(2));
     }
 
     @Test
+    @Description("Проверить что нет юзера под номром 23")
     public void noSuchUserTest() {
         given()
                 .spec(request)
@@ -63,6 +83,7 @@ public class User {
     }
 
     @Test
+    @Description("Проверить что всего в выдаче 2 страницы")
     public void bodyParameterTest() {
 
         given()
@@ -74,6 +95,7 @@ public class User {
     }
 
     @Test
+    @Description("Проверить что у первого юзера на второй странице id = 7")
     public void secondObjectTest() {
 
         given()
@@ -85,29 +107,16 @@ public class User {
     }
 
     @Test
-    public void singleUserTest() {
+    @Description("Проверить что страница юзеров под №2 не пустая с использованием groovy")
+
+    public void usersPageIsNotEmpty() {
 
         given()
                 .spec(request)
-                .get("/users/2")
+                .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
-                .body("data.email", is("janet.weaver@reqres.in"))
-                .body("data.id", is(2))
-                .body("data.first_name", is("Janet"))
-                .body("data.last_name", is("Weaver"));
-    }
-
-    @Test
-    public void extraInfoTest() {
-
-        given()
-                .spec(request)
-                .get("/users/2")
-                .then()
-                .spec(responseSpec)
-
-                .body("support.text", is("To keep ReqRes free, contributions towards server costs are appreciated!"));
+                .body("data.findAll.flatten()", is(not(empty())));
     }
 }
 

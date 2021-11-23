@@ -2,6 +2,7 @@ package Reqres;
 
 import Reqres.models.UserData;
 import io.qameta.allure.Description;
+import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.Test;
 
 import static Reqres.Specs.request;
@@ -18,6 +19,7 @@ public class UserTests {
     public void userJanetData() {
         UserData data = given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/users/2")
                 .then()
@@ -35,6 +37,7 @@ public class UserTests {
     public void userEmmaData() {
         UserData data = given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/users/3")
                 .then()
@@ -52,6 +55,7 @@ public class UserTests {
     public void extraInfoData() {
         UserData data = given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users/2")
                 .then()
                 .spec(responseSpec)
@@ -66,6 +70,7 @@ public class UserTests {
     public void pagesAmountTest() {
         given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -77,6 +82,7 @@ public class UserTests {
     public void noSuchUserTest() {
         given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users/23")
                 .then()
                 .statusCode(404);
@@ -88,6 +94,7 @@ public class UserTests {
 
         given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -100,6 +107,7 @@ public class UserTests {
 
         given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -108,11 +116,11 @@ public class UserTests {
 
     @Test
     @Description("Проверить что страница юзеров под №2 не пустая с использованием groovy")
-
     public void usersPageIsNotEmpty() {
 
         given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)

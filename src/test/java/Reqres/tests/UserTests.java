@@ -1,12 +1,13 @@
-package Reqres;
+package Reqres.tests;
 
 import Reqres.models.UserData;
 import io.qameta.allure.Description;
 import io.qameta.allure.restassured.AllureRestAssured;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static Reqres.Specs.request;
-import static Reqres.Specs.responseSpec;
+import static Reqres.tests.Specs.request;
+import static Reqres.tests.Specs.responseSpec;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.not;
@@ -115,6 +116,7 @@ public class UserTests {
     }
 
     @Test
+    @DisplayName("")
     @Description("Проверить что страница юзеров под №2 не пустая с использованием groovy")
     public void usersPageIsNotEmpty() {
 

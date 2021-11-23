@@ -1,14 +1,15 @@
-package Reqres;
+package Reqres.tests;
 
 import Reqres.models.ResourceData;
 import io.qameta.allure.Description;
-import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.Test;
 
-import static Reqres.Specs.request;
-import static Reqres.Specs.responseSpec;
+import static Reqres.filters.CustomLogFilter.customLogFilter;
+import static Reqres.tests.Specs.request;
+import static Reqres.tests.Specs.responseSpec;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class ResourceTests {
     @Test
@@ -16,7 +17,7 @@ public class ResourceTests {
     public void resourceDataTest() {
         ResourceData data = given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("/unknown/2")
                 .then()
@@ -35,7 +36,7 @@ public class ResourceTests {
     public void secondResourceDataTest() {
         ResourceData data = given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("/unknown/3")
                 .then()

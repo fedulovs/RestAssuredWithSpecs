@@ -2,6 +2,7 @@ package Reqres;
 
 import Reqres.models.ResourceData;
 import io.qameta.allure.Description;
+import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.Test;
 
 import static Reqres.Specs.request;
@@ -12,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ResourceTests {
     @Test
     @Description("Проверить поля ресурса 2")
-
     public void resourceDataTest() {
         ResourceData data = given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/unknown/2")
                 .then()
@@ -34,6 +35,7 @@ public class ResourceTests {
     public void secondResourceDataTest() {
         ResourceData data = given()
                 .spec(request)
+                .filter(new AllureRestAssured())
                 .when()
                 .get("/unknown/3")
                 .then()

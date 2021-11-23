@@ -2,10 +2,10 @@ package Reqres.tests;
 
 import Reqres.models.UserData;
 import io.qameta.allure.Description;
-import io.qameta.allure.restassured.AllureRestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static Reqres.filters.CustomLogFilter.customLogFilter;
 import static Reqres.tests.Specs.request;
 import static Reqres.tests.Specs.responseSpec;
 import static io.restassured.RestAssured.given;
@@ -20,7 +20,7 @@ public class UserTests {
     public void userJanetData() {
         UserData data = given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("/users/2")
                 .then()
@@ -38,7 +38,7 @@ public class UserTests {
     public void userEmmaData() {
         UserData data = given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("/users/3")
                 .then()
@@ -56,7 +56,7 @@ public class UserTests {
     public void extraInfoData() {
         UserData data = given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users/2")
                 .then()
                 .spec(responseSpec)
@@ -71,7 +71,7 @@ public class UserTests {
     public void pagesAmountTest() {
         given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -83,7 +83,7 @@ public class UserTests {
     public void noSuchUserTest() {
         given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users/23")
                 .then()
                 .statusCode(404);
@@ -95,7 +95,7 @@ public class UserTests {
 
         given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -108,7 +108,7 @@ public class UserTests {
 
         given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
@@ -122,7 +122,7 @@ public class UserTests {
 
         given()
                 .spec(request)
-                .filter(new AllureRestAssured())
+                .filter(customLogFilter().withCustomTemplates())
                 .get("/users?page=2")
                 .then()
                 .spec(responseSpec)
